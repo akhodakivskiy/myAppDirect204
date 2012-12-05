@@ -32,7 +32,7 @@ object Application extends Controller {
         User.findById(userId.toInt) match {
           case Some(u) => {
             Account.findById(u.accountId) match {
-              case Some(a) => Redirect(a.baseUrl)
+              case Some(a) => Redirect(a.baseUrl).withNewSession
               case None => Redirect("/").withNewSession
             }
           }
