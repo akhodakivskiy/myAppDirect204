@@ -48,16 +48,6 @@ object AppDirect extends Controller {
     val Reactivate = Value("REACTIVATE")
   }
 
-  // Creates OAuthCalculator used to sign HTTP requests
-  def signCalc = {
-    val ck = ConsumerKey(
-      Play.current.configuration.getString("oauth.key").get,
-      Play.current.configuration.getString("oauth.secret").get
-    )
-    val oauth = OAuth(ServiceInfo(null, null, null, ck))
-    OAuthCalculator(ck, RequestToken("", ""))
-  }
-
   /*! \brief Generic API response helper
    *
    *  Wrapped in Ok
@@ -261,13 +251,24 @@ object AppDirect extends Controller {
     }
   }
 
-  /*! \brief OpenId enabled login Action
+  /*! \brief Creates OAuthCalculator used to sign HTTP requests
    *  
    */
-  def login(openid: String, accountid: String = null) = Action { implicit request =>
-    val user = User.findBy("openid", openid)
+  def oAuthSignCalc = {
+    val ck = ConsumerKey(
+      Play.current.configuration.getString("oauth.key").get,
+      Play.current.configuration.getString("oauth.secret").get
+    )
+    val oauth = OAuth(ServiceInfo(null, null, null, ck))
+    OAuthCalculator(ck, RequestToken("", ""))
+  }
 
-    user match {
+  /*! \brief OpenId enabled login Action
+   *  
+   *  Initiate new session and store userId
+   */
+  def login(openid: String, accountid: String = null) = Action { implicit request =>
+    User.findBy("openid", openid) match {
       case Some(x) => Redirect("/").withSession("userId" -> x.id.toString)
       case None => Unauthorized("You don't have access to this page")
     }
@@ -278,12 +279,9 @@ object AppDirect extends Controller {
    */
   def subscription(token:String, url:String) = Action { implicit request =>
     Async {
-      WS.url(url).sign(signCalc).get().map { response =>
+      WS.url(url).sign(oAuthSignCalc).get().map { response =>
         try {
           val event = response.xml
-
-          Logger.info((event \\ "event" \ "type").text)
-          Logger.info(event.toString)
 
           EventType.withName((event \\ "event" \ "type").text) match {
             case EventType.SubscriptionOrder  => AppDirectOrder(event)
