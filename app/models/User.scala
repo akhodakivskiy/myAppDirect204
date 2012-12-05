@@ -124,4 +124,11 @@ object User {
       SQL("delete from users where id = {id}").on('id -> id).executeUpdate()
     }
   }
+
+  def deleteFromAccount(accountId: Long) {
+    DB.withConnection { implicit connection =>
+      SQL("delete from users where account_id = {accountId}").on('accountId -> accountId).executeUpdate()
+    }
+  }
+
 }

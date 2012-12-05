@@ -170,7 +170,7 @@ object AppDirect extends Controller {
             edition = (order \ "editionCode").text,
             duration = (order \ "pricingDuration").text
         ))
-        AppDirectOk("User Subscription Cancelled")
+        AppDirectOk("User Subscription Changed")
       }
       case None => AppDirectError(ErrorCode.AccountNotFound.toString, "Account doesn't exist")
     }
@@ -189,15 +189,9 @@ object AppDirect extends Controller {
     val accountId = parseLong((account \ "accountIdentifier").text, -1)
     Account.findById(accountId) match {
       case Some(a) => {
-        User.findBy("uuid", (creator \ "uuid").text) match {
-          case Some(u) => {
-            User.delete(u.id.get)
-            AppDirectOk("User Subscription Cancelled")
-          }
-          case None => {
-            AppDirectError(ErrorCode.UserNotFound.toString, "User is not subscribed")
-          }
-        }
+        User.deleteFromAccount(accountId)
+        Account.delete(accountId)
+        AppDirectOk("Subscription Cancelled")
       }
       case None => AppDirectError(ErrorCode.AccountNotFound.toString, "Account doesn't exist")
     }
