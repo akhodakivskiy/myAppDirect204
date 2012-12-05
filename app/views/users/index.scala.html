@@ -1,0 +1,40 @@
+@(accounts: List[Account])
+
+@main("Accounts") {
+
+<h1>Accounts</h1>
+
+<table class="table table-striped table-hover">
+<thead>
+    <tr>
+        <th>Id</th>
+        <th>UUID</th>
+        <th>Country</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Website</th>
+        <th>Edition</th>
+        <th>Duration</th>
+        <th>Active</th>
+        <th>Marketplace</th>
+    </tr>
+</thead>
+<tbody>
+@accounts.map { account =>
+    <tr>
+        <td>@account.id</td>
+        <td><a href="users/@account.id">@account.uuid</a></td>
+        <td>@account.country</td>
+        <td>@account.name</td>
+        <td>@account.phone</td>
+        <td>@account.website</td>
+        <td>@account.edition</td>
+        <td>@account.duration</td>
+        <td>@account.active</td>
+        <td><a href="@account.baseUrl">@account.partner</a></td>
+    </tr>
+}
+</tbody>
+</table>
+
+}

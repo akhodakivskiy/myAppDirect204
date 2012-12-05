@@ -1,0 +1,35 @@
+@(account:Account, users: List[User])
+
+@main("Users") {
+
+<ul class="breadcrumb">
+    <li><a href="/">Accounts</a> <span class="divider">/</span></li>
+    <li class="Active">@account.name [id: @account.id]</li>
+</ul>
+
+<h1>Users</h1>
+
+<table class="table table-striped table-hover">
+<thead>
+    <tr>
+        <th>Id</th>
+        <th>UUID</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+</thead>
+<tbody>
+@users.map { user =>
+    <tr>
+        <td>@user.id</td>
+        <td>@user.uuid</td>
+        <td>@user.email - <a href="@user.openid">openid</a></td>
+        <td>@user.first</td>
+        <td>@user.last</td>
+    </tr>
+}
+</tbody>
+</table>
+
+}

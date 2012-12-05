@@ -1,0 +1,15 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                               controllers.Application.index
+GET     /users/:accountId               controllers.Application.users(accountId: Long)
+
+#AppDirect APIs
+GET     /appDirect/login/:openid/:accountid     controllers.AppDirect.login(openid: String, accountid: String)
+GET     /appDirect/login/:openid/               controllers.AppDirect.login(openid: String, accountid: String ?= null)
+GET     /appDirect/subscription/:token/:url     controllers.AppDirect.subscription(token:String, url:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                   controllers.Assets.at(path="/public", file)
