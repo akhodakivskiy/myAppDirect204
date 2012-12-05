@@ -269,7 +269,17 @@ object AppDirect extends Controller {
    */
   def login(openid: String, accountid: String = null) = Action { implicit request =>
     User.findBy("openid", openid) match {
-      case Some(x) => Redirect("/").withSession("userId" -> x.id.toString)
+      case Some(u) => {
+        Account.findById(u.accountId) match {
+          case Some(a) => {
+            a.active match {
+              case true => Redirect("/").withSession("userId" -> u.id.toString)
+              case false => Unauthorized("You don't have access to this page")
+            }
+          }
+          case None => Unauthorized("You don't have access to this page")
+        }
+      }
       case None => Unauthorized("You don't have access to this page")
     }
   }
