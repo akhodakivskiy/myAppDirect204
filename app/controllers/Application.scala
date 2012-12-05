@@ -26,4 +26,24 @@ object Application extends Controller {
     }
   }
 
+  def logout = Action { implicit request =>
+    session.get("userId").map { userId => 
+      try {
+        User.findById(userId.toInt) match {
+          case Some(u) => {
+            Account.findById(u.accountId) match {
+              case Some(a) => Redirect(a.baseUrl)
+              case None => Redirect("/").withNewSession
+            }
+          }
+          case None => Redirect("/").withNewSession
+        }
+      } catch {
+        case _: java.lang.NumberFormatException => Redirect("/").withNewSession
+      }
+    }.getOrElse {
+      Unauthorized("You don't have access to this page")
+    }
+  }
+
 }

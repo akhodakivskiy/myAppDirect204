@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                               controllers.Application.index
-GET     /users/:accountId               controllers.Application.users(accountId: Long)
+GET     /                   controllers.Application.index
+GET     /users/:accountId   controllers.Application.users(accountId: Long)
+GET     /logout             controllers.Application.logout
 
 #AppDirect APIs
 GET     /appDirect/login/:openid/:accountid     controllers.AppDirect.login(openid: String, accountid: String)
