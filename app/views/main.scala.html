@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, auth: Boolean = true)(content: Html)
 
 <!DOCTYPE html>
 
@@ -22,11 +22,13 @@
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" href="#">myAppDirect</a>
-                    <ul class="nav">
-                        <li class="active"><a href="/">Accounts</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
+                    <a class="brand" href="/">myAppDirect</a>
+                    @if(auth) {
+                        <ul class="nav">
+                            <li class="active"><a href="/">Accounts</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
-@(message: String)
+@(message: String, auth: Boolean)
 
-@main("myAppDirect") {
+@main("myAppDirect", auth) {
 
     <h3>Error!</h3>
     <p class="text-error">@message</p>

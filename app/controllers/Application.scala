@@ -11,7 +11,7 @@ object Application extends Controller {
     session.get("userId").map { userId => 
       Ok(views.html.users.index(Account.all()))
     }.getOrElse {
-      Unauthorized(views.html.error("You don't have access to this page"))
+      Unauthorized(views.html.error("You don't have access to this page", false))
     }
   }
   
@@ -22,7 +22,7 @@ object Application extends Controller {
         case None => BadRequest("account Doesn't exist")
       }
     }.getOrElse {
-      Unauthorized(views.html.error("You don't have access to this page"))
+      Unauthorized(views.html.error("You don't have access to this page", false))
     }
   }
 
@@ -42,7 +42,7 @@ object Application extends Controller {
         case _: java.lang.NumberFormatException => Redirect("/").withNewSession
       }
     }.getOrElse {
-      Unauthorized(views.html.error("You don't have access to this page"))
+      Unauthorized(views.html.error("You don't have access to this page", false))
     }
   }
 
