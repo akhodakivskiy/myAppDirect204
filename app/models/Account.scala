@@ -74,19 +74,10 @@ object Account {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          insert into accounts values 
-          ( (select next value for account_id_seq)
-          , {uuid}
-          , {country}
-          , {name}
-          , {phone}
-          , {website}
-          , {edition}
-          , {duration}
-          , {active}
-          , {partner}
-          , {baseUrl}
-          )
+          insert into accounts 
+          (  uuid,   country,   name,   phone,   website,   edition,   duration,   active,   partner,   base_Url  )
+          values 
+          ( {uuid}, {country}, {name}, {phone}, {website}, {edition}, {duration}, {active}, {partner}, {baseUrl} )
         """
       ).on( 'uuid     -> account.uuid
           , 'country  -> account.country

@@ -75,15 +75,10 @@ object User {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          insert into users values 
-          ( (select next value for user_id_seq)
-          , {uuid}
-          , {email}
-          , {openid}
-          , {first}
-          , {last}
-          , {account_id}
-          )
+          insert into users 
+          (  uuid,   email,   openid,   first,   last,   account_id  )
+          values 
+          ( {uuid}, {email}, {openid}, {first}, {last}, {account_id} )
         """
       ).on( 'uuid       -> user.uuid
           , 'email      -> user.email
